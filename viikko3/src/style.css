@@ -1,0 +1,82 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #172033;
+  background: #f2f5fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at top left, #e1eaff 0, transparent 38%), #f2f5fb;
+}
+
+.card {
+  width: min(100%, 560px);
+  padding: clamp(28px, 7vw, 56px);
+  border: 1px solid #e4e9f2;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 24px 70px #26385c14;
+  text-align: center;
+}
+
+.eyebrow {
+  color: #596ee6;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+h1 {
+  margin: 14px 0 12px;
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  letter-spacing: -0.055em;
+}
+
+.intro {
+  max-width: 410px;
+  margin: 0 auto 30px;
+  color: #697386;
+  line-height: 1.7;
+}
+
+button {
+  min-height: 50px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease;
+}
+
+button:hover { transform: translateY(-2px); }
+button:focus-visible { outline: 3px solid #aeb8ff; outline-offset: 3px; }
+.login-button { color: #fff; background: #596ee6; }
+.login-button:hover { background: #4559ce; }
+
+.welcome {
+  padding: 24px 18px;
+  border: 1px solid #e8ebff;
+  border-radius: 18px;
+  background: #f7f8ff;
+}
+
+.sparkle { color: #e8a82e; font-size: 2rem; }
+.welcome-label { margin: 8px 0; color: #697386; }
+.codename { margin: 8px 0 14px; color: #4e61d3; font-size: clamp(2rem, 8vw, 3rem); font-weight: 800; letter-spacing: -0.05em; overflow-wrap: anywhere; }
+.saved { color: #26845a; font-size: 0.9rem; }
+.notice { color: #9a5c00; font-size: 0.9rem; }
+.secondary-button { margin-top: 12px; color: #39445a; background: #e9edf5; }
+.secondary-button:hover { background: #dce2ed; }
+
+footer { margin-top: 28px; color: #8790a0; font-size: 0.78rem; line-height: 1.6; }
