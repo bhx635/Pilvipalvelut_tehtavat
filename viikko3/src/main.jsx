@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import './style.css';
+
+const STORAGE_KEY = 'codename';
 
 const adjectives = [
-  'Sneaky', 'Cosmic', 'Mighty', 'Bouncy', 'Clever',
-  'Sleepy', 'Fuzzy', 'Ninja', 'Happy', 'Electric'
+  'Sneaky',
+  'Cosmic',
+  'Mighty',
+  'Bouncy',
+  'Clever',
+  'Sleepy',
+  'Fuzzy',
+  'Ninja',
+  'Happy',
+  'Electric',
 ];
 
 const animals = [
-  'Panda', 'Fox', 'Penguin', 'Otter', 'Dragon',
-  'Raccoon', 'Koala', 'Llama', 'Badger', 'Unicorn'
+  'Panda',
+  'Fox',
+  'Penguin',
+  'Otter',
+  'Dragon',
+  'Raccoon',
+  'Koala',
+  'Llama',
+  'Badger',
+  'Unicorn',
 ];
 
 function generateCodename() {
   const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
   const animal = animals[Math.floor(Math.random() * animals.length)];
   const number = Math.floor(Math.random() * 90) + 10;
+
   return `${adjective}${animal}${number}`;
 }
 
@@ -25,19 +45,21 @@ function App() {
 
   function handleLogin() {
     try {
-      // Käytetään vanhaa koodinimeä, jos se löytyy; muuten luodaan ja tallennetaan uusi.
-      const cachedName = localStorage.getItem('codename');
+      const cachedName = localStorage.getItem(STORAGE_KEY);
       const name = cachedName || generateCodename();
+
       if (!cachedName) {
-        localStorage.setItem('codename', name);
+        localStorage.setItem(STORAGE_KEY, name);
       }
+
       setCodename(name);
       setStorageError(false);
-    } catch (error) {
-      // Sovellus toimii myös, jos selain estää Local Storagen käytön.
+    } catch {
+      // Sovellus toimii myös silloin, jos selain estää Local Storagen käytön.
       setCodename(generateCodename());
       setStorageError(true);
     }
+
     setIsLoggedIn(true);
   }
 
@@ -45,35 +67,47 @@ function App() {
     setIsLoggedIn(false);
   }
 
-  return React.createElement(
-    'main',
-    { className: 'card' },
-    React.createElement('span', { className: 'eyebrow' }, 'VIIKKOTEHTÄVÄ 3'),
-    React.createElement('h1', null, 'Koodinimigeneraattori'),
-    React.createElement(
-      'p',
-      { className: 'intro' },
-      'Kirjaudu sisään ja saat hauskan koodinimen. Nimesi säilyy tällä selaimella myös seuraavaa kertaa varten.'
-    ),
-    isLoggedIn
-      ? React.createElement(
-          'section',
-          { className: 'welcome', 'aria-live': 'polite' },
-          React.createElement('span', { className: 'sparkle', 'aria-hidden': 'true' }, '✦'),
-          React.createElement('p', { className: 'welcome-label' }, 'Tervetuloa, sinun koodinimesi on'),
-          React.createElement('p', { className: 'codename' }, codename),
-          storageError
-            ? React.createElement('p', { className: 'notice' }, 'Selain ei sallinut Local Storagen käyttöä, joten nimeä ei voitu tallentaa.')
-            : React.createElement('p', { className: 'saved' }, '✓ Tallennettu Local Storageen'),
-          React.createElement('button', { type: 'button', className: 'secondary-button', onClick: handleLogout }, 'Kirjaudu ulos')
-        )
-      : React.createElement(
-          'button',
-          { type: 'button', className: 'login-button', onClick: handleLogin },
-          'Kirjaudu sisään'
-        ),
-    React.createElement('footer', null, 'Koodinimi tallennetaan selaimen Local Storageen avaimella “codename”.')
+  return (
+    <main className="card">
+      <span className="eyebrow">VIIKKOTEHTÄVÄ 3</span>
+      <h1>Koodinimigeneraattori</h1>
+      <p className="intro">
+        Kirjaudu sisään ja saat hauskan koodinimen. Nimesi säilyy tällä
+        selaimella myös seuraavaa kertaa varten.
+      </p>
+
+      {isLoggedIn ? (
+        <section className="welcome" aria-live="polite">
+          <span className="sparkle" aria-hidden="true">✦</span>
+          <p className="welcome-label">Tervetuloa, sinun koodinimesi on</p>
+          <p className="codename">{codename}</p>
+          {storageError ? (
+            <p className="notice">
+              Selain ei sallinut Local Storagen käyttöä, joten nimeä ei voitu
+              tallentaa.
+            </p>
+          ) : (
+            <p className="saved">✓ Tallennettu Local Storageen</p>
+          )}
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={handleLogout}
+          >
+            Kirjaudu ulos
+          </button>
+        </section>
+      ) : (
+        <button type="button" className="login-button" onClick={handleLogin}>
+          Kirjaudu sisään
+        </button>
+      )}
+
+      <footer>
+        Koodinimi tallennetaan selaimen Local Storageen avaimella "codename".
+      </footer>
+    </main>
   );
 }
 
-createRoot(document.getElementById('root')).render(React.createElement(App));
+createRoot(document.getElementById('root')).render(<App />);

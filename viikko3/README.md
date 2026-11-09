@@ -1,13 +1,17 @@
 # Viikko 3 – Vite + React ja Local Storage
 
-Pieni React-sovellus arpoo kirjautuvalle käyttäjälle hauskan koodinimen. Koodinimi tallennetaan selaimen Local Storageen avaimella `codename`, ja samalla selaimella kirjautuessa käytetään aiemmin tallennettua nimeä.
+Pieni Vite-pohjainen React-sovellus arpoo kirjautuvalle käyttäjälle hauskan koodinimen. Koodinimi tallennetaan selaimen Local Storageen avaimella `codename`, ja samalla selaimella myöhemmin kirjautuessa käytetään aiemmin tallennettua nimeä.
 
 ## Käynnistä kehitystilassa
+
+Avaa terminaali tässä kansiossa (`viikko3`) ja suorita:
 
 ```bash
 npm install
 npm run dev
 ```
+
+Avaa terminaalin ilmoittama osoite selaimessa (yleensä `http://localhost:5173`).
 
 ## Rakenna julkaistava versio
 
@@ -16,4 +20,4 @@ npm run build
 npm run preview
 ```
 
-Sovelluksen React-lähdekoodi ja tyylit ovat `src/`-kansiossa. `index.html` sisältää myös selaimessa käytettävän React-import mapin, joten tehtävä toimii GitHub Pagesissa tästä kansiosta.
+React-komponentti, koodinimen generointi ja Local Storage -käsittely ovat tiedostossa `src/main.jsx`. Vite käsittelee Reactin ja CSS:n buildin yhteydessä.
