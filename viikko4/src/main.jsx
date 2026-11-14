@@ -19,76 +19,111 @@ function generateCodename() {
 }
 
 function App() {
+  const [email, setEmail] = useState(() => {
+    try {
+      return localStorage.getItem('loginEmail') || '';
+    } catch {
+      return '';
+    }
+  });
+  const [password, setPassword] = useState('');
   const [codename, setCodename] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [storageError, setStorageError] = useState(false);
 
-  function handleLogin() {
+  function handleLogin(event) {
+    event.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
-      const cachedName = localStorage.getItem('codename');
+      // Muistetaan sähköposti, mutta salasanaa ei koskaan tallenneta selaimeen.
+      localStorage.setItem('loginEmail', normalizedEmail);
+      const codenameKey = `codename:${normalizedEmail}`;
+      const cachedName = localStorage.getItem(codenameKey);
       const name = cachedName || generateCodename();
 
       if (!cachedName) {
-        localStorage.setItem('codename', name);
+        localStorage.setItem(codenameKey, name);
       }
 
       setCodename(name);
       setStorageError(false);
     } catch {
-      // Näytetään silti koodinimi, vaikka selain estäisi Local Storagen.
       setCodename(generateCodename());
       setStorageError(true);
     }
 
+    setEmail(normalizedEmail);
+    setPassword('');
     setIsLoggedIn(true);
   }
 
   function handleLogout() {
     setIsLoggedIn(false);
+    setPassword('');
   }
 
   return React.createElement(
     'main',
     { className: 'card' },
-    React.createElement('span', { className: 'eyebrow' }, 'VIIKKOTEHTÄVÄ 4'),
-    React.createElement('div', { className: 'icon', 'aria-hidden': 'true' }, '✦'),
-    React.createElement('h1', null, 'Koodinimigeneraattori'),
-    React.createElement(
-      'p',
-      { className: 'intro' },
-      'Kirjaudu sisään ja saat itsellesi hauskan koodinimen. Se tallennetaan selaimeesi seuraavaa kertaa varten.'
-    ),
     isLoggedIn
       ? React.createElement(
-          'section',
-          { className: 'welcome', 'aria-live': 'polite' },
-          React.createElement('p', { className: 'welcome-label' }, 'Tervetuloa, koodinimesi on'),
-          React.createElement('p', { className: 'codename' }, codename),
-          storageError
-            ? React.createElement(
-                'p',
-                { className: 'notice' },
-                'Selain esti Local Storagen käytön. Koodinimeä ei voitu tallentaa.'
-              )
-            : React.createElement('p', { className: 'saved' }, '✓ Tallennettu selaimen Local Storageen'),
+          React.Fragment,
+          null,
+          React.createElement('h1', null, 'Tervetuloa!'),
           React.createElement(
-            'button',
-            { type: 'button', className: 'secondary-button', onClick: handleLogout },
-            'Kirjaudu ulos'
+            'section',
+            { className: 'welcome', 'aria-live': 'polite' },
+            React.createElement('p', { className: 'welcome-label' }, 'Koodinimesi on'),
+            React.createElement('p', { className: 'codename' }, codename),
+            storageError
+              ? React.createElement('p', { className: 'notice' }, 'Selain esti tallennuksen. Koodinimeä ei voitu tallentaa.')
+              : React.createElement('p', { className: 'saved' }, '✓ Koodinimi tallennettu selaimeen'),
+            React.createElement('button', { type: 'button', className: 'secondary-button', onClick: handleLogout }, 'Kirjaudu ulos')
           )
         )
       : React.createElement(
-          'button',
-          { type: 'button', className: 'login-button', onClick: handleLogin },
-          'Kirjaudu sisään'
-        ),
-    React.createElement(
-      'footer',
-      null,
-      'Koodinimi tallennetaan selaimen Local Storageen avaimella ',
-      React.createElement('code', null, 'codename'),
-      '.'
-    )
+          React.Fragment,
+          null,
+          React.createElement('h1', null, 'Firebase Login Demo'),
+          React.createElement('h2', { className: 'login-heading' }, 'Kirjaudu sisään'),
+          React.createElement(
+            'form',
+            { className: 'login-form', onSubmit: handleLogin },
+            React.createElement(
+              'label',
+              { className: 'field-row' },
+              React.createElement('span', null, 'Sähköposti'),
+              React.createElement('input', {
+                type: 'email',
+                name: 'email',
+                autoComplete: 'email',
+                value: email,
+                onChange: (event) => setEmail(event.target.value),
+                required: true,
+              })
+            ),
+            React.createElement(
+              'label',
+              { className: 'field-row' },
+              React.createElement('span', null, 'Salasana'),
+              React.createElement('input', {
+                type: 'password',
+                name: 'password',
+                autoComplete: 'current-password',
+                value: password,
+                onChange: (event) => setPassword(event.target.value),
+                required: true,
+              })
+            ),
+            React.createElement('button', { type: 'submit', className: 'login-button' }, 'Kirjaudu')
+          ),
+          React.createElement(
+            'p',
+            { className: 'privacy-note' },
+            'Demo ei tarkista tunnuksia Firebase-palvelusta. Sähköposti muistetaan tällä selaimella; salasanaa ei tallenneta.'
+          )
+        )
   );
 }
 
