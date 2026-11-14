@@ -30,6 +30,25 @@ function App() {
   const [codename, setCodename] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [storageError, setStorageError] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      return localStorage.getItem('loginTheme') === 'dark';
+    } catch {
+      return false;
+    }
+  });
+
+  document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';
+
+  function toggleTheme() {
+    const nextIsDark = !isDarkMode;
+    setIsDarkMode(nextIsDark);
+    try {
+      localStorage.setItem('loginTheme', nextIsDark ? 'dark' : 'light');
+    } catch {
+      // Teeman vaihto toimii myös ilman Local Storagea.
+    }
+  }
 
   function handleLogin(event) {
     event.preventDefault();
@@ -66,6 +85,16 @@ function App() {
   return React.createElement(
     'main',
     { className: 'card' },
+    React.createElement(
+      'button',
+      {
+        type: 'button',
+        className: 'theme-toggle',
+        onClick: toggleTheme,
+        'aria-label': isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan',
+      },
+      isDarkMode ? '☀️ Vaalea teema' : '🌙 Tumma teema'
+    ),
     isLoggedIn
       ? React.createElement(
           React.Fragment,
