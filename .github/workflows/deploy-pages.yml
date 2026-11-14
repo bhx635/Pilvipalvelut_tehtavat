@@ -1,0 +1,58 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: viikko4/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --prefix viikko4
+
+      - name: Build Vite app
+        run: npm run build --prefix viikko4 -- --outDir ../_site/viikko4
+
+      - name: Prepare root site files
+        run: |
+          mkdir -p _site
+          cp index.html styles.css viikko1.html viikko2.html viikko3.html viikko4.html viikko5.html viikko6.html harjoitustyo.html _site/
+          cp -R viikko3 _site/viikko3
+          cp "Näyttökuva 2026-11-09 095749.png" _site/
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
