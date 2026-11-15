@@ -4,38 +4,6 @@
   background: #15161b;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  color-scheme: light;
-
-  --page-background: radial-gradient(circle at 15% 10%, #e1e7ff 0, transparent 38%), #f3f5ff;
-  --text-color: #172033;
-  --muted-color: #697386;
-  --input-background: #fff;
-  --input-border: #b7bfce;
-  --input-text: #172033;
-  --panel-background: #fff;
-  --panel-border: #e4e8f4;
-  --welcome-background: #f7f8ff;
-  --welcome-border: #e8ebff;
-  --button-background: #596ee6;
-  --button-hover: #4559ce;
-  --button-text: #fff;
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --page-background: #17171d;
-  --text-color: #f4f3f8;
-  --muted-color: #aebbd0;
-  --input-background: #414141;
-  --input-border: #85838a;
-  --input-text: #fff;
-  --panel-background: #1d1c24;
-  --panel-border: #3b3944;
-  --welcome-background: #1d1c24;
-  --welcome-border: #3b3944;
-  --button-background: #686868;
-  --button-hover: #777;
-  --button-text: #fff;
 }
 
 * { box-sizing: border-box; }
@@ -44,7 +12,6 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-<<<<<<< HEAD
   background: #15161b;
 }
 
@@ -102,83 +69,10 @@ button, input { font: inherit; }
 
 .field-row input:focus-visible {
   outline: 2px solid #b87bfa;
-=======
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  color: var(--text-color);
-  background: var(--page-background);
-  transition: color 180ms ease, background 180ms ease;
-}
-
-.card {
-  width: min(100%, 560px);
-  padding: clamp(20px, 5vw, 40px);
-  border: 1px solid var(--panel-border);
-  border-radius: 24px;
-  background: var(--panel-background);
-  box-shadow: 0 24px 70px #26385c14;
-  text-align: center;
-}
-
-h1 {
-  margin: 0 0 14px;
-  color: var(--text-color);
-  font-size: clamp(1.7rem, 6vw, 2rem);
-  letter-spacing: -0.035em;
-}
-
-.login-heading {
-  margin: 0 0 14px;
-  font-size: 1.4rem;
-}
-
-.theme-toggle {
-  display: block;
-  min-height: 36px;
-  margin: 0 0 18px auto;
-  padding: 6px 12px;
-  border: 1px solid var(--input-border);
-  border-radius: 8px;
-  color: var(--text-color);
-  background: transparent;
-  font-size: 0.9rem;
-}
-
-.login-form {
-  display: grid;
-  justify-items: center;
-  gap: 18px;
-}
-
-.field-row {
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  width: min(100%, 320px);
-  color: var(--muted-color);
-  font-size: 1.1rem;
-}
-
-.field-row input {
-  width: min(100%, 212px);
-  height: 34px;
-  padding: 5px 8px;
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  background: var(--input-background);
-  color: var(--input-text);
-  font: inherit;
-}
-
-.field-row input:focus-visible {
-  outline: 2px solid #596ee6;
->>>>>>> origin/main
   outline-offset: 2px;
 }
 
 button {
-<<<<<<< HEAD
   min-height: 27px;
   padding: 3px 12px;
   border: 0;
@@ -233,37 +127,6 @@ button:focus-visible {
   font-size: 1.8rem;
 }
 
-=======
-  min-height: 36px;
-  padding: 5px 14px;
-  border: 0;
-  border-radius: 5px;
-  font: inherit;
-  cursor: pointer;
-  transition: background 150ms ease, transform 150ms ease;
-}
-
-button:hover { transform: translateY(-1px); }
-button:focus-visible { outline: 2px solid #596ee6; outline-offset: 3px; }
-.login-button { color: var(--button-text); background: var(--button-background); }
-.login-button:hover { background: var(--button-hover); }
-
-.privacy-note {
-  margin: 18px 0 0;
-  color: var(--muted-color);
-  font-size: 0.82rem;
-  line-height: 1.5;
-}
-
-.welcome {
-  padding: 24px 18px;
-  border: 1px solid var(--welcome-border);
-  border-radius: 18px;
-  background: var(--welcome-background);
-}
-
-.welcome-label { margin: 0 0 8px; color: var(--muted-color); }
->>>>>>> origin/main
 .codename {
   margin: 38px 0 48px;
   color: #bd7bff;
@@ -272,7 +135,6 @@ button:focus-visible { outline: 2px solid #596ee6; outline-offset: 3px; }
   letter-spacing: -0.05em;
   overflow-wrap: anywhere;
 }
-<<<<<<< HEAD
 
 .new-codename-button {
   min-height: 40px;
@@ -302,15 +164,4 @@ button:focus-visible { outline: 2px solid #596ee6; outline-offset: 3px; }
   .welcome-label, .user-email { font-size: 1.15rem; }
   .codename { margin: 30px 0 40px; }
   .logout-button { margin-top: 52px; }
-=======
-:root[data-theme="dark"] .codename { color: #00d9f5; }
-.saved, .notice { font-size: 0.9rem; }
-.saved { color: #26845a; }
-.notice { color: #9a5c00; }
-.secondary-button { margin-top: 12px; color: var(--button-text); background: var(--button-background); }
-.secondary-button:hover { background: var(--button-hover); }
-
-@media (max-width: 420px) {
-  .card { padding: 20px; }
->>>>>>> origin/main
 }
