@@ -24,6 +24,7 @@ function generateCodename() {
 }
 
 function App() {
+<<<<<<< HEAD
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -48,19 +49,70 @@ function App() {
     try {
       const cachedName = localStorage.getItem('codename');
       name = cachedName || generateCodename();
+=======
+  const [email, setEmail] = useState(() => {
+    try {
+      return localStorage.getItem('loginEmail') || '';
+    } catch {
+      return '';
+    }
+  });
+  const [password, setPassword] = useState('');
+  const [codename, setCodename] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [storageError, setStorageError] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      return localStorage.getItem('loginTheme') === 'dark';
+    } catch {
+      return false;
+    }
+  });
+
+  document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';
+
+  function toggleTheme() {
+    const nextIsDark = !isDarkMode;
+    setIsDarkMode(nextIsDark);
+    try {
+      localStorage.setItem('loginTheme', nextIsDark ? 'dark' : 'light');
+    } catch {
+      // Teeman vaihto toimii myös ilman Local Storagea.
+    }
+  }
+
+  function handleLogin(event) {
+    event.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+
+    try {
+      // Muistetaan sähköposti, mutta salasanaa ei koskaan tallenneta selaimeen.
+      localStorage.setItem('loginEmail', normalizedEmail);
+      const codenameKey = `codename:${normalizedEmail}`;
+      const cachedName = localStorage.getItem(codenameKey);
+      const name = cachedName || generateCodename();
+>>>>>>> origin/main
 
       if (!cachedName) {
-        localStorage.setItem('codename', name);
+        localStorage.setItem(codenameKey, name);
       }
 
       setStorageError(false);
     } catch {
+<<<<<<< HEAD
       name = generateCodename();
       setStorageError(true);
     }
 
     setCodename(name);
     setUserEmail(DEMO_CREDENTIALS.email);
+=======
+      setCodename(generateCodename());
+      setStorageError(true);
+    }
+
+    setEmail(normalizedEmail);
+>>>>>>> origin/main
     setPassword('');
     setIsLoggedIn(true);
   }
@@ -79,6 +131,7 @@ function App() {
 
   function handleLogout() {
     setIsLoggedIn(false);
+<<<<<<< HEAD
     setEmail('');
     setPassword('');
     setUserEmail('');
@@ -158,6 +211,82 @@ function App() {
         </section>
       )}
     </main>
+=======
+    setPassword('');
+  }
+
+  return React.createElement(
+    'main',
+    { className: 'card' },
+    React.createElement(
+      'button',
+      {
+        type: 'button',
+        className: 'theme-toggle',
+        onClick: toggleTheme,
+        'aria-label': isDarkMode ? 'Vaihda vaaleaan teemaan' : 'Vaihda tummaan teemaan',
+      },
+      isDarkMode ? '☀️ Vaalea teema' : '🌙 Tumma teema'
+    ),
+    isLoggedIn
+      ? React.createElement(
+          React.Fragment,
+          null,
+          React.createElement('h1', null, 'Tervetuloa!'),
+          React.createElement(
+            'section',
+            { className: 'welcome', 'aria-live': 'polite' },
+            React.createElement('p', { className: 'welcome-label' }, 'Koodinimesi on'),
+            React.createElement('p', { className: 'codename' }, codename),
+            storageError
+              ? React.createElement('p', { className: 'notice' }, 'Selain esti tallennuksen. Koodinimeä ei voitu tallentaa.')
+              : React.createElement('p', { className: 'saved' }, '✓ Koodinimi tallennettu selaimeen'),
+            React.createElement('button', { type: 'button', className: 'secondary-button', onClick: handleLogout }, 'Kirjaudu ulos')
+          )
+        )
+      : React.createElement(
+          React.Fragment,
+          null,
+          React.createElement('h1', null, 'Firebase Login Demo'),
+          React.createElement('h2', { className: 'login-heading' }, 'Kirjaudu sisään'),
+          React.createElement(
+            'form',
+            { className: 'login-form', onSubmit: handleLogin },
+            React.createElement(
+              'label',
+              { className: 'field-row' },
+              React.createElement('span', null, 'Sähköposti'),
+              React.createElement('input', {
+                type: 'email',
+                name: 'email',
+                autoComplete: 'email',
+                value: email,
+                onChange: (event) => setEmail(event.target.value),
+                required: true,
+              })
+            ),
+            React.createElement(
+              'label',
+              { className: 'field-row' },
+              React.createElement('span', null, 'Salasana'),
+              React.createElement('input', {
+                type: 'password',
+                name: 'password',
+                autoComplete: 'current-password',
+                value: password,
+                onChange: (event) => setPassword(event.target.value),
+                required: true,
+              })
+            ),
+            React.createElement('button', { type: 'submit', className: 'login-button' }, 'Kirjaudu')
+          ),
+          React.createElement(
+            'p',
+            { className: 'privacy-note' },
+            'Demo ei tarkista tunnuksia Firebase-palvelusta. Sähköposti muistetaan tällä selaimella; salasanaa ei tallenneta.'
+          )
+        )
+>>>>>>> origin/main
   );
 }
 
