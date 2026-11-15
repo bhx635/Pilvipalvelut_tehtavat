@@ -1,4 +1,92 @@
-<!DOCTYPE html>
+import { useState } from "react";
+import "./App.css";
+
+const adjectives = ["Sneaky", "Happy", "Brave", "Sleepy", "Mighty"];
+const animals = ["Panda", "Fox", "Koala", "Tiger", "Otter"];
+
+function generateCodename() {
+  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const animal = animals[Math.floor(Math.random() * animals.length)];
+  const number = Math.floor(Math.random() * 90) + 10;
+
+  return `${adjective}${animal}${number}`;
+}
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [codename, setCodename] = useState("");
+  const [error, setError] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+
+    try {
+      const cachedName = localStorage.getItem("codename");
+      const name = cachedName || generateCodename();
+
+      if (!cachedName) {
+        localStorage.setItem("codename", name);
+      }
+
+      setCodename(name);
+      setIsLoggedIn(true);
+    } catch {
+      setError("Koodinimen tallennus ei onnistunut. Tarkista selaimen asetukset.");
+    }
+  }
+
+  function handleLogout() {
+    setIsLoggedIn(false);
+  }
+
+  return (
+    <main className="app">
+      <h1>Firebase Login Demo</h1>
+
+      {isLoggedIn ? (
+        <section className="content" aria-live="polite">
+          <h2>Kirjautuminen onnistui!</h2>
+          <p>Sinun koodinimesi on:</p>
+          <p className="codename">{codename}</p>
+          <button type="button" onClick={handleLogout}>
+            Kirjaudu ulos
+          </button>
+        </section>
+      ) : (
+        <section className="content">
+          <h2>Kirjaudu sisään</h2>
+
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="email">Sähköposti</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+            />
+
+            <label htmlFor="password">Salasana</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+            />
+
+            <button type="submit">Kirjaudu</button>
+          </form>
+
+          {error && <p className="error" role="alert">{error}</p>}
+        </section>
+      )}
+    </main>
+  );
+}
+
+export default App;<!DOCTYPE html>
 <html lang="fi">
 <head>
     <meta charset="UTF-8">
