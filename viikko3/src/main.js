@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
+
+const h = React.createElement;
 
 const adjectives = [
   'Sneaky', 'Cosmic', 'Mighty', 'Bouncy', 'Clever',
@@ -46,25 +48,27 @@ function App() {
     setIsLoggedIn(false);
   }
 
-  return (
-    <main className="app-shell">
-      <h1>Koodinimisovellus</h1>
-      <button
-        type="button"
-        onClick={isLoggedIn ? handleLogout : handleLogin}
-      >
-        {isLoggedIn ? 'Kirjaudu ulos' : 'Kirjaudu sisään'}
-      </button>
-      <p className="codename" aria-live="polite">
-        Koodinimesi on {codename}
-      </p>
-      {storageError && (
-        <p className="notice" role="status">
-          Nimeä ei voitu tallentaa selaimen Local Storageen.
-        </p>
-      )}
-    </main>
+  return h(
+    'main',
+    { className: 'app-shell' },
+    h('h1', null, 'Koodinimisovellus'),
+    h(
+      'button',
+      {
+        type: 'button',
+        onClick: isLoggedIn ? handleLogout : handleLogin,
+      },
+      isLoggedIn ? 'Kirjaudu ulos' : 'Kirjaudu sisään'
+    ),
+    h('p', { className: 'codename', 'aria-live': 'polite' }, 'Koodinimesi on ', codename),
+    storageError
+      ? h(
+          'p',
+          { className: 'notice', role: 'status' },
+          'Nimeä ei voitu tallentaa selaimen Local Storageen.'
+        )
+      : null
   );
 }
 
-createRoot(document.getElementById('root')).render(<App />);
+createRoot(document.getElementById('root')).render(h(App));
