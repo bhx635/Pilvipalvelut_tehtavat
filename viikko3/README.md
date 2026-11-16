@@ -1,6 +1,13 @@
 # Viikko 3 – Vite + React ja Local Storage
 
-Pieni React-sovellus arpoo kirjautuvalle käyttäjälle hauskan koodinimen. Koodinimi tallennetaan selaimen Local Storageen avaimella `codename`, ja samalla selaimella kirjautuessa käytetään aiemmin tallennettua nimeä.
+React-sovellus arpoo kirjautuvalle käyttäjälle hauskan koodinimen. Nimi tallennetaan selaimen Local Storageen avaimella `codename`, ja samalla selaimella kirjautuessa käytetään aiemmin tallennettua nimeä. Kirjautumisnäkymä ja demotunnukset noudattavat viikon 4 projektin mallia.
+
+## Demotunnukset
+
+- Tunnus: `testi@esimerkki.fi`
+- Salasana: `ss123`
+
+Kirjautuminen on selainkoodissa toimiva demo, ei oikea tunnistautuminen Firebase-palveluun. Tunnukset ovat julkisia eikä niitä pidä käyttää muissa palveluissa.
 
 ## Käynnistä kehitystilassa
 
@@ -16,4 +23,4 @@ npm run build
 npm run preview
 ```
 
-Sovelluksen React-lähdekoodi ja tyylit ovat `src/`-kansiossa. `index.html` sisältää myös selaimessa käytettävän React-import mapin, joten tehtävä toimii GitHub Pagesissa tästä kansiosta.
+React-lähdekoodi ja tyylit ovat `src/`-kansiossa. Vite niputtaa React-riippuvuudet julkaisuversioon, joten sovellus ei tarvitse selaimessa ladattavaa React-import mapia.

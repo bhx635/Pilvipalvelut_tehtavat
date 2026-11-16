@@ -41,12 +41,19 @@ h1 {
   letter-spacing: -0.055em;
 }
 
+h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
 .intro {
   max-width: 410px;
   margin: 0 auto 30px;
   color: #697386;
   line-height: 1.7;
 }
+
+button, input { font: inherit; }
 
 button {
   min-height: 50px;
@@ -64,6 +71,44 @@ button:focus-visible { outline: 3px solid #aeb8ff; outline-offset: 3px; }
 .login-button { color: #fff; background: #596ee6; }
 .login-button:hover { background: #4559ce; }
 
+.login-form {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.field-row {
+  display: grid;
+  width: min(100%, 380px);
+  gap: 6px;
+  text-align: left;
+}
+
+.field-row label {
+  color: #596579;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.field-row input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 11px;
+  border: 1px solid #d5dbea;
+  border-radius: 9px;
+  color: #172033;
+  background: #fff;
+}
+
+.field-row input:focus-visible {
+  outline: 3px solid #aeb8ff;
+  outline-offset: 2px;
+}
+
+.login-error { margin: 0; color: #a43e3e; font-size: 0.9rem; }
+.credentials { margin: 16px 0 0; color: #8790a0; font-size: 0.82rem; }
+
 .welcome {
   padding: 24px 18px;
   border: 1px solid #e8ebff;
@@ -74,8 +119,11 @@ button:focus-visible { outline: 3px solid #aeb8ff; outline-offset: 3px; }
 .sparkle { color: #e8a82e; font-size: 2rem; }
 .welcome-label { margin: 8px 0; color: #697386; }
 .codename { margin: 8px 0 14px; color: #4e61d3; font-size: clamp(2rem, 8vw, 3rem); font-weight: 800; letter-spacing: -0.05em; overflow-wrap: anywhere; }
+.user-email { margin: 10px 0 28px; color: #596ee6; font-weight: 700; overflow-wrap: anywhere; }
 .saved { color: #26845a; font-size: 0.9rem; }
 .notice { color: #9a5c00; font-size: 0.9rem; }
+.new-codename-button { color: #fff; background: #596ee6; }
+.new-codename-button:hover { background: #4559ce; }
 .secondary-button { margin-top: 12px; color: #39445a; background: #e9edf5; }
 .secondary-button:hover { background: #dce2ed; }
 
