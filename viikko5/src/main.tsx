@@ -2,32 +2,18 @@ import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
 import { QuizForm } from "./components/QuizForm";
-import { clearPlayers, getStoredSession, joinSession, saveSession } from "./gameSessionService";
+import { clearPlayers, getStoredSession, joinSession } from "./gameSessionService";
 import { nextRound, resetGame, startGameIfPossible, submitGuess } from "./gameController";
 import { type Session } from "./types/Session";
 
-const adjectives = ["Hiljainen", "Utelias", "Nopea", "Viisas", "Rohkea"];
-const animals = ["Lisko", "Kettu", "Panda", "Pöllö", "Saukko"];
-
-function createUser() {
-  const suffix = crypto.randomUUID().slice(0, 8);
-  const codename = `${adverbs(adjectives)}${adverbs(animals)}${suffix}`;
-  return { uid: suffix, codename };
-}
-
-function adverbs(values: string[]) {
-  return values[Math.floor(Math.random() * values.length)];
-}
+const players = [
+  { email: "pelaaja@yksi.fi", password: "ss123", uid: "pelaaja-yksi", codename: "HiljainenLisko" },
+  { email: "pelaaja@kaksi.fi", password: "ss456", uid: "pelaaja-kaksi", codename: "UteliasKettu" },
+];
 
 function App() {
   const [session, setSession] = useState<Session>(() => getStoredSession());
-  const [user] = useState(() => {
-    const stored = sessionStorage.getItem("hintavisa-user");
-    if (stored) return JSON.parse(stored) as { uid: string; codename: string };
-    const user = createUser();
-    sessionStorage.setItem("hintavisa-user", JSON.stringify(user));
-    return user;
-  });
+  const [user, setUser] = useState<{ uid: string; codename: string } | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +23,9 @@ function App() {
     const sync = () => setSession(getStoredSession());
     window.addEventListener("storage", sync);
     const channel = new BroadcastChannel("hintavisa");
-    channel.onmessage = sync;
+    channel.onmessage = (event) => {
+      setSession(event.data as Session);
+    };
     return () => {
       window.removeEventListener("storage", sync);
       channel.close();
@@ -45,7 +33,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (loggedIn && session.status === "waiting") {
+    if (loggedIn && user && session.status === "waiting") {
       const next = joinSession({ uid: user.uid, codename: user.codename, score: 0, guess: null });
       setSession(next);
     }
@@ -53,10 +41,14 @@ function App() {
 
   function login(event: React.FormEvent) {
     event.preventDefault();
-    if (!email.includes("@") || password.length < 3) {
-      setError("Anna sähköposti ja vähintään 3 merkin salasana.");
+    const player = players.find(
+      (item) => item.email === email.trim().toLowerCase() && item.password === password
+    );
+    if (!player) {
+      setError("Virheellinen sähköposti tai salasana.");
       return;
     }
+    setUser({ uid: player.uid, codename: player.codename });
     setError("");
     setLoggedIn(true);
   }
@@ -72,23 +64,53 @@ function App() {
 
   return (
     <main className="app-shell">
-      <h1>Hintavisa</h1>
       {!loggedIn ? (
-        <section className="login-card">
-          <h2>Kirjaudu peliin</h2>
-          <form onSubmit={login}>
-            <label htmlFor="email">Sähköposti</label>
-            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <label htmlFor="password">Salasana</label>
-            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            {error && <p role="alert">{error}</p>}
-            <button type="submit">Kirjaudu</button>
+        <section className="login-screen">
+          <h1>Kirjaudu peliin</h1>
+          <form className="login-form" onSubmit={login}>
+            <div className="field-row">
+              <label htmlFor="email">Sähköposti</label>
+              <input
+                autoComplete="username"
+                id="email"
+                name="email"
+                type="email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setError("");
+                }}
+                required
+              />
+            </div>
+            <div className="field-row">
+              <label htmlFor="password">Salasana</label>
+              <input
+                autoComplete="current-password"
+                id="password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setError("");
+                }}
+                required
+              />
+            </div>
+            {error && <p className="login-error" role="alert">{error}</p>}
+            <button type="submit" className="login-button">Kirjaudu</button>
           </form>
         </section>
-      ) : (
+      ) : user ? (
         <>
           <p>Olet kirjautunut nimellä <strong>{user.codename}</strong></p>
-          <button onClick={() => setLoggedIn(false)}>Kirjaudu ulos</button>
+          <button onClick={() => {
+            setLoggedIn(false);
+            setUser(null);
+            setEmail("");
+            setPassword("");
+          }}>Kirjaudu ulos</button>
           {error && <p role="alert">{error}</p>}
 
           <section className="game-card">
@@ -137,7 +159,7 @@ function App() {
             )}
           </section>
         </>
-      )}
+      ) : null}
     </main>
   );
 }

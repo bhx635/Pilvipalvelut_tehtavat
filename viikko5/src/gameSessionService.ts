@@ -26,6 +26,9 @@ export function getStoredSession(): Session {
 
 export function saveSession(session: Session): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+  const channel = new BroadcastChannel("hintavisa");
+  channel.postMessage(session);
+  channel.close();
   window.dispatchEvent(new StorageEvent("storage", {
     key: STORAGE_KEY,
     newValue: JSON.stringify(session),
