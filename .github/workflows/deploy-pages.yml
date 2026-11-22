@@ -48,7 +48,7 @@ jobs:
         run: npm run build --prefix viikko4 -- --outDir ../_site/viikko4
 
       - name: Build week 5 app
-        run: npm run build --prefix viikko5 -- --outDir ../_site/viikko5 --emptyOutDir
+        run: npm run build --prefix viikko5 -- --outDir ../_site/viikko5/dist --emptyOutDir
 
       - name: Prepare root site files
         run: |
