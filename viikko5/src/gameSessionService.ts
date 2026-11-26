@@ -10,6 +10,7 @@ import { type Session } from "./types/Session";
 
 const STORAGE_KEY = "viikko5-game-session";
 const SESSION_ID = "hintavisa";
+let signInPromise: Promise<void> | null = null;
 
 export const createInitialSession = (): Session => ({
   id: SESSION_ID,
@@ -50,8 +51,15 @@ function sessionReference() {
 }
 
 async function ensureSignedIn(): Promise<void> {
-  if (!authentication) return;
-  if (!authentication.currentUser) await signInAnonymously(authentication);
+  if (!authentication || authentication.currentUser) return;
+  if (!signInPromise) {
+    signInPromise = signInAnonymously(authentication)
+      .then(() => undefined)
+      .finally(() => {
+        signInPromise = null;
+      });
+  }
+  await signInPromise;
 }
 
 export function subscribeToSession(

@@ -2,6 +2,17 @@ import { type Product } from "./types/Product";
 import { type Session } from "./types/Session";
 import { updateSession } from "./gameSessionService";
 
+function isProduct(value: unknown): value is Product {
+  if (!value || typeof value !== "object") return false;
+  const product = value as Partial<Product>;
+  return (
+    typeof product.id === "number" &&
+    typeof product.title === "string" &&
+    typeof product.price === "number" &&
+    (product.thumbnail === undefined || typeof product.thumbnail === "string")
+  );
+}
+
 export async function fetchRandomProduct(): Promise<Product> {
   const response = await fetch("https://dummyjson.com/products");
   if (!response.ok) throw new Error("Tuotteiden haku epäonnistui.");
@@ -10,17 +21,19 @@ export async function fetchRandomProduct(): Promise<Product> {
     !data ||
     typeof data !== "object" ||
     !("products" in data) ||
-    !Array.isArray(data.products) ||
-    data.products.length === 0
+    !Array.isArray(data.products)
   ) {
     throw new Error("Tuotteita ei löytynyt.");
   }
-  const products = data.products as Product[];
+  const products = data.products.filter(isProduct);
+  if (products.length === 0) throw new Error("Tuotteita ei löytynyt.");
   return products[Math.floor(Math.random() * products.length)];
 }
 
 export function pointsForGuess(guess: number, price: number): number {
-  const relativeDifference = Math.abs(guess - price) / Math.max(price, 1);
+  const relativeDifference = price === 0
+    ? Math.abs(guess)
+    : Math.abs(guess - price) / price;
   return Math.max(0, Math.round(100 * (1 - relativeDifference)));
 }
 

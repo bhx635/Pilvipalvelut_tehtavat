@@ -20,7 +20,7 @@ export function RoundResult({ players, correctPrice, onNextRound }: Props) {
       <ul>
         {sorted.map((player) => (
           <li key={player.uid}>
-            {player.codename}: {player.guess ?? "ei arvausta"} € — ero{" "}
+            {player.codename}: {player.guess === null ? "ei arvausta" : player.guess.toFixed(2)} € — ero{" "}
             {player.guess === null ? "–" : Math.abs(player.guess - correctPrice).toFixed(2)} € —
             kierroksen pisteet {player.guess === null ? 0 : pointsForGuess(player.guess, correctPrice)} —
             yhteensä {player.score}
