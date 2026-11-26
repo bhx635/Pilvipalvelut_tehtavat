@@ -48,6 +48,11 @@ jobs:
         run: npm run build --prefix viikko4 -- --outDir ../_site/viikko4
 
       - name: Build week 5 app
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
         run: npm run build --prefix viikko5 -- --outDir ../_site/viikko5/dist --emptyOutDir
 
       - name: Prepare root site files
