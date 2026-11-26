@@ -43,10 +43,29 @@ button:disabled { cursor: not-allowed; opacity: 0.55; }
   text-align: center;
 }
 
+.connection-status {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  max-width: calc(100% - 24px);
+  margin: 0;
+  color: #aab4c4;
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.connection-connected { color: #8fd7a6; }
+.connection-error, .game-error { color: #ff9a9a; }
+
 .login-screen h1 {
   margin: 0 0 16px;
   font-size: 1.75rem;
   line-height: 1.2;
+}
+
+.login-help {
+  color: #aab4c4;
+  font-size: 0.9rem;
 }
 
 .login-form {
@@ -122,6 +141,11 @@ button:disabled { cursor: not-allowed; opacity: 0.55; }
 
 @media (max-width: 480px) {
   .app-shell { padding: 20px; }
+  .connection-status {
+    position: static;
+    margin-bottom: 12px;
+    text-align: center;
+  }
   .field-row {
     grid-template-columns: 96px minmax(0, 1fr);
     font-size: 1.05rem;

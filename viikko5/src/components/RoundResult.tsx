@@ -1,4 +1,5 @@
 import { type Player } from "../types/Player";
+import { pointsForGuess } from "../gameController";
 
 type Props = {
   players: Player[];
@@ -20,7 +21,9 @@ export function RoundResult({ players, correctPrice, onNextRound }: Props) {
         {sorted.map((player) => (
           <li key={player.uid}>
             {player.codename}: {player.guess ?? "ei arvausta"} € — ero{" "}
-            {player.guess === null ? "–" : Math.abs(player.guess - correctPrice)} € — pisteet {player.score}
+            {player.guess === null ? "–" : Math.abs(player.guess - correctPrice).toFixed(2)} € —
+            kierroksen pisteet {player.guess === null ? 0 : pointsForGuess(player.guess, correctPrice)} —
+            yhteensä {player.score}
           </li>
         ))}
       </ul>

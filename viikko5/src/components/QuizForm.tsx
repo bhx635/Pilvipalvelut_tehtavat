@@ -8,7 +8,7 @@ type Props = {
   currentUserId: string;
   currentProduct: Product | null;
   correctPrice: number | null;
-  onSubmitGuess: (guess: number) => void;
+  onSubmitGuess: (guess: number) => void | Promise<void>;
   onNextRound: () => void;
 };
 
@@ -52,7 +52,7 @@ export function QuizForm({
           onSubmit={(event) => {
             event.preventDefault();
             const value = Number(guess);
-            if (Number.isFinite(value) && value >= 0) onSubmitGuess(value);
+            if (Number.isFinite(value) && value >= 0) void onSubmitGuess(value);
           }}
         >
           <input
