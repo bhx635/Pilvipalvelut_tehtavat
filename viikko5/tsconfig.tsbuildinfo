@@ -1,1 +1,1 @@
-{"root":["./src/gameController.ts","./src/gameSessionService.ts","./src/main.tsx","./src/components/QuizForm.tsx","./src/components/RoundResult.tsx","./src/types/Player.ts","./src/types/Product.ts","./src/types/Session.ts"],"version":"5.9.3"}
+{"root":["./src/firebase.ts","./src/gameController.ts","./src/gameSessionService.ts","./src/main.tsx","./src/vite-env.d.ts","./src/components/QuizForm.tsx","./src/components/RoundResult.tsx","./src/types/Player.ts","./src/types/Product.ts","./src/types/Session.ts"],"version":"5.9.3"}
