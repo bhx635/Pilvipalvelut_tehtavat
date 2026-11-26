@@ -2,11 +2,15 @@ import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
 import { QuizForm } from "./components/QuizForm";
-import { clearPlayers, joinSession, subscribeToSession } from "./gameSessionService";
+import {
+  clearPlayers,
+  createInitialSession,
+  joinSession,
+  subscribeToSession,
+} from "./gameSessionService";
 import { isFirestoreConfigured } from "./firebase";
 import { nextRound, resetGame, startGameIfPossible, submitGuess } from "./gameController";
 import { type Session } from "./types/Session";
-import { createInitialSession } from "./gameSessionService";
 
 const players = [
   { email: "pelaaja@yksi.fi", password: "ss123", uid: "pelaaja-yksi", codename: "HiljainenLisko" },
@@ -48,7 +52,7 @@ function App() {
     void joinSession({ uid: user.uid, codename: user.codename, score: 0, guess: null })
       .then(setSession)
       .catch((cause: unknown) => setError(errorMessage(cause, "Peliin liittyminen epäonnistui.")));
-  }, [loggedIn, user, session.status, session.players]);
+  }, [loggedIn, user, session.status]);
 
   function login(event: React.FormEvent) {
     event.preventDefault();

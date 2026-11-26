@@ -3,7 +3,6 @@ import {
   doc,
   onSnapshot,
   runTransaction,
-  type DocumentData,
 } from "firebase/firestore";
 import { authentication, database } from "./firebase";
 import { type Player } from "./types/Player";
@@ -143,7 +142,7 @@ export async function updateSession(
   return runTransaction(database, async (transaction) => {
     const snapshot = await transaction.get(sessionReference());
     const current = snapshot.exists()
-      ? parseSession(snapshot.data() as DocumentData)
+      ? parseSession(snapshot.data())
       : createInitialSession();
     const next = update(current);
     transaction.set(sessionReference(), next);
